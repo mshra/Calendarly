@@ -1,25 +1,23 @@
-// app/api/auth/[auth0]/route.js
 import { handleAuth, handleCallback, getSession } from "@auth0/nextjs-auth0";
+import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 const auth0Handler = handleAuth({
-  callback: async (req) => {
+  callback: async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-      const res = handleCallback(req);
-
-      const session = await getSession(req);
+      await handleCallback(req, res);
+      const session = await getSession(req, res);
       const user = session?.user;
 
       if (user) {
         // check user if it exists in database
-        // create a new user if it doesn not exist in database
+        // create a new user if it doesn't exist in database
       }
+
+      return res;
     } catch (error) {
       console.error("Auth callback error:", error);
-      return NextResponse.json(
-        { error: "Authentication callback failed" },
-        { status: 500 },
-      );
+      return res.status(500).json({ error: "Authentication callback failed" });
     }
   },
 });
