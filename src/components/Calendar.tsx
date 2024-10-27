@@ -96,6 +96,9 @@ function CalendarApp(): JSX.Element {
               Add Event
             </Button>
           </DialogTrigger>
+          <Button onClick={() => console.log("view in calendar clicked")}>
+            View in Calendar
+          </Button>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
