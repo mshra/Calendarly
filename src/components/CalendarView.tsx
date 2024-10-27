@@ -16,8 +16,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Event } from "@/types/events";
 
-const CalendarView = ({ events }) => {
+function CalendarView({ events }: { events: Event[] }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState("month"); // 'month' or 'week'
 
@@ -240,6 +241,6 @@ const CalendarView = ({ events }) => {
       </div>
     </div>
   );
-};
+}
 
 export default CalendarView;
