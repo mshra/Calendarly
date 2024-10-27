@@ -24,6 +24,7 @@ function CalendarApp(): JSX.Element {
     time: "",
     description: "",
   });
+  const router = useRouter();
 
   // Move the events initialization to useEffect
   useEffect(() => {
@@ -60,8 +61,6 @@ function CalendarApp(): JSX.Element {
       setNewEvent((prev) => ({ ...prev, [name]: value }));
     }
   };
-
-  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
