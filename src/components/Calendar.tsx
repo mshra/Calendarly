@@ -4,7 +4,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Plus, Edit2, Trash2, Calendar, Clock } from "lucide-react";
 import { Input } from "./ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { DialogHeader } from "./ui/dialog";
@@ -24,26 +24,30 @@ function CalendarApp(): JSX.Element {
     description: "",
   });
 
+  // Move the events initialization to useEffect
+  useEffect(() => {
+    if (user) {
+      setEvents([
+        {
+          id: 1,
+          title: "Team Meeting",
+          date: "2024-10-28",
+          time: "10:00",
+          description: "Weekly sync with development team.",
+        },
+        {
+          id: 2,
+          title: "Client Call",
+          date: "2024-10-28",
+          time: "14:30",
+          description: "Project review with client",
+        },
+      ]);
+    }
+  }, [user]); // Only run when user changes
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
-  if (user) {
-    setEvents([
-      {
-        id: 1,
-        title: "Team Meeting",
-        date: "2024-10-28",
-        time: "10:00",
-        description: "Weekly sync with development team.",
-      },
-      {
-        id: 2,
-        title: "Client Call",
-        date: "2024-10-28",
-        time: "14:30",
-        description: "Project review with client",
-      },
-    ]);
-  }
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
