@@ -10,8 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
-import { LogOut } from "lucide-react";
 import Logout from "./LogoutButton";
 
 function ProfileDropdown({ user }: { user: UserProfile }) {
