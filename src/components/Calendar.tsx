@@ -9,15 +9,15 @@ import { Button } from "./ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { DialogHeader } from "./ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Event } from "@/types/events";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { EventFormData, Event } from "@/types/events";
 
-function CalendarApp() {
+function CalendarApp(): JSX.Element {
   const [events, setEvents] = useState<Event[]>([]);
   const { user, error, isLoading } = useUser();
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [newEvent, setNewEvent] = useState({
+  const [newEvent, setNewEvent] = useState<EventFormData>({
     title: "",
     date: "",
     time: "",
@@ -45,16 +45,18 @@ function CalendarApp() {
     ]);
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ): void => {
     const { name, value } = e.target;
-    if (isEditMode) {
-      setSelectedEvent((prev) => ({ ...prev, [name]: value }));
+    if (isEditMode && selectedEvent) {
+      setSelectedEvent((prev) => (prev ? { ...prev, [name]: value } : null));
     } else {
       setNewEvent((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (isEditMode && selectedEvent) {
       setEvents(
@@ -71,11 +73,11 @@ function CalendarApp() {
     setSelectedEvent(null);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: number): void => {
     setEvents(events.filter((event) => event.id !== id));
   };
 
-  const handleEdit = (event) => {
+  const handleEdit = (event: Event): void => {
     setSelectedEvent(event);
     setIsEditMode(true);
   };
@@ -100,9 +102,14 @@ function CalendarApp() {
               <div>
                 <Label htmlFor="title">Title</Label>
                 <Input
+                  id="title"
                   type="text"
                   name="title"
-                  value={isEditMode ? selectedEvent?.title : newEvent.title}
+                  value={
+                    isEditMode && selectedEvent
+                      ? selectedEvent.title
+                      : newEvent.title
+                  }
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded"
                   required={true}
@@ -111,9 +118,14 @@ function CalendarApp() {
               <div>
                 <Label htmlFor="date">Date</Label>
                 <Input
+                  id="date"
                   type="date"
                   name="date"
-                  value={isEditMode ? selectedEvent?.date : newEvent.date}
+                  value={
+                    isEditMode && selectedEvent
+                      ? selectedEvent.date
+                      : newEvent.date
+                  }
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded"
                   required={true}
@@ -122,9 +134,14 @@ function CalendarApp() {
               <div>
                 <Label htmlFor="time">Time</Label>
                 <Input
+                  id="time"
                   type="time"
                   name="time"
-                  value={isEditMode ? selectedEvent?.time : newEvent.time}
+                  value={
+                    isEditMode && selectedEvent
+                      ? selectedEvent.time
+                      : newEvent.time
+                  }
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded"
                   required={true}
@@ -133,10 +150,11 @@ function CalendarApp() {
               <div>
                 <Label htmlFor="description">Description</Label>
                 <Textarea
+                  id="description"
                   name="description"
                   value={
-                    isEditMode
-                      ? selectedEvent?.description
+                    isEditMode && selectedEvent
+                      ? selectedEvent.description
                       : newEvent.description
                   }
                   onChange={handleInputChange}
@@ -178,11 +196,11 @@ function CalendarApp() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <div className="flex items-center gap-2 ">
+                <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   <span>{event.date}</span>
                 </div>
-                <div className="flex items-center gap-2 ">
+                <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   <span>{event.time}</span>
                 </div>
