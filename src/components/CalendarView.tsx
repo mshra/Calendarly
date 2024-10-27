@@ -39,7 +39,7 @@ function CalendarView({ events }: { events: Event[] }) {
   ];
 
   // Get days in month
-  const getDaysInMonth = (date) => {
+  const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
@@ -76,7 +76,7 @@ function CalendarView({ events }: { events: Event[] }) {
   };
 
   // Get week days
-  const getWeekDays = (date) => {
+  const getWeekDays = (date: Date) => {
     const week = [];
     const current = new Date(date);
     current.setDate(current.getDate() - current.getDay());
@@ -93,7 +93,7 @@ function CalendarView({ events }: { events: Event[] }) {
   };
 
   // Get events for a specific date
-  const getEventsForDate = (date) => {
+  const getEventsForDate = (date: Date) => {
     return events.filter((event) => {
       const eventDate = new Date(event.date);
       return eventDate.toDateString() === date.toDateString();
