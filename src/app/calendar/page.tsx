@@ -1,3 +1,5 @@
+"use client";
+
 import CalendarView from "@/components/CalendarView";
 import Navbar from "@/components/Navbar";
 import { useUser } from "@auth0/nextjs-auth0/client";

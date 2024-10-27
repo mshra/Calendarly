@@ -1,37 +1,17 @@
 import { asc, count, eq, getTableColumns } from "drizzle-orm";
 import { db } from "../index";
 import { SelectUser, postsTable, usersTable } from "../schema";
+import { Event } from "@/types/events";
 
-export async function getUserById(id: SelectUser["id"]): Promise<
+export async function getUserByEmail(email: SelectUser["email"]): Promise<
   Array<{
     id: number;
     name: string;
     email: string;
   }>
 > {
-  return db.select().from(usersTable).where(eq(usersTable.id, id));
+  return db.select().from(usersTable).where(eq(usersTable.email, email));
 }
-
-export async function getUsersWithPostsCount(
-  page = 1,
-  pageSize = 5,
-): Promise<
-  Array<{
-    postsCount: number;
-    id: number;
-    name: string;
-    email: string;
-  }>
-> {
-  return db
-    .select({
-      ...getTableColumns(usersTable),
-      postsCount: count(postsTable.id),
-    })
-    .from(usersTable)
-    .leftJoin(postsTable, eq(usersTable.email, postsTable.email))
-    .groupBy(usersTable.id)
-    .orderBy(asc(usersTable.id))
-    .limit(pageSize)
-    .offset((page - 1) * pageSize);
+export async function getEventsByUserEmail(email: SelectUser["email"]) {
+  return db.select().from(postsTable).where(eq(postsTable.email, email));
 }
