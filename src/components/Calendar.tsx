@@ -11,6 +11,7 @@ import { DialogHeader } from "./ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { EventFormData, Event } from "@/types/events";
+import { useRouter } from "next/navigation";
 
 function CalendarApp(): JSX.Element {
   const [events, setEvents] = useState<Event[]>([]);
@@ -60,6 +61,8 @@ function CalendarApp(): JSX.Element {
     }
   };
 
+  const router = useRouter();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (isEditMode && selectedEvent) {
@@ -96,7 +99,7 @@ function CalendarApp(): JSX.Element {
               Add Event
             </Button>
           </DialogTrigger>
-          <Button onClick={() => console.log("view in calendar clicked")}>
+          <Button onClick={() => router.push("/calendar")}>
             View in Calendar
           </Button>
           <DialogContent>
